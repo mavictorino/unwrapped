@@ -1,9 +1,9 @@
 function PersonCard({ name, interests, budget }) {
     return (
-        <article>
+        <article className="person-card">
             <h3>{name}</h3>
 
-            <div>
+            <div className="interests">
                 {interests.map((interest) => (
                     <span key={interest}>{interest}</span>
                 ))}

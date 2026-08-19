@@ -1,14 +1,30 @@
+:root {
+  --navy: #26547C;
+  --pink: #EF476F;
+  --yellow: #FFD166;
+  --green: #06D6A0;
+  --cream: #FFF9F0;
+  --white: #FFFFFF;
+  --text: #1F2933;
+}
+
 * {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  margin: 0;
-  min-height: 100%;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--cream);
+  color: var(--text);
   font-family: Arial, sans-serif;
+}
+
+button {
+  font: inherit;
 }

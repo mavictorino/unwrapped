@@ -40,7 +40,7 @@ function App() {
         <section className="people-section">
           <h2>Your people</h2>
 
-          <div>
+          <div className="people-grid">
             {people.map((person) => (
               <PersonCard
               key={person.name}
