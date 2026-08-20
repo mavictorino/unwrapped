@@ -1,24 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import PersonCard from "./components/PersonCard";
 import AddPersonForm from "./components/AddPersonForm";
 
 function App() {
-  const [people, setPeople] = useState([
-    {
-      id: 1,
-      name: "Ana",
-      interests: ["☕ Coffee", "📚 Books", "✈️ Travel"],
-      budget: 40,
-    },
-    {
-      id: 2,
-      name: "Leo",
-      interests: ["🎮 Gaming", "🎵 Music", "⚽ Sports"],
-      budget: 50,
-    },
-  ]);
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/people")
+    .then((response) => response.json())
+    .then((data) => {
+      setPeople(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching people:", error)
+    });
+  }, []);
 
   const [showForm, setShowForm] = useState(false);
 
