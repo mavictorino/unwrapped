@@ -147,6 +147,93 @@ main {
   cursor: pointer;
 }
 
+.form-section {
+  margin-bottom: 70px;
+}
+
+.person-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px;
+  border: 3px solid var(--navy);
+  border-radius: 24px;
+  background: var(--yellow);
+  box-shadow: 8px 8px 0 var(--pink);
+}
+
+.person-form h2 {
+  margin-top: 0;
+  margin-bottom: 28px;
+  color: var(--navy);
+  font-size: 2rem;
+}
+
+.person-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  color: var(--navy);
+  font-weight: 800;
+}
+
+.person-form input {
+  width: 100%;
+  padding: 13px 15px;
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+}
+
+.person-form input:focus {
+  border-color: var(--pink);
+  box-shadow: 3px 3px 0 var(--green);
+}
+
+.person-form input::placeholder {
+  color: #7a7a7a;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.form-actions button {
+  padding: 11px 20px;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.form-actions button[type='button'] {
+  background: transparent;
+  color: var(--navy);
+}
+
+.form-actions button[type='submit'] {
+  background: var(--pink);
+  color: var(--white);
+  box-shadow: 4px 4px 0 var(--navy);
+}
+
+.form-actions button[type='button']:hover {
+  background: var(--white);
+}
+
+.form-actions button[type='submit']:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--navy)
+}
+
+
+
 @media (max-width: 700px) {
   .hero {
     padding: 60px 0 70px;
