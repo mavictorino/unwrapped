@@ -43,3 +43,35 @@ def get_people():
         people.append(person)
 
     return people
+
+@app.post("/people")
+def add_person(person: dict):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO people (name, interests, budget)
+        VALUES (%s, %s, %s)
+        RETURNING id, name, interests, budget
+        """,
+        (
+            person["name"],
+            person["interests"],
+            person["budget"],
+        ),
+    )
+
+    row = cursor.fetchone()
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+
+    return {
+        "id": row[0],
+        "name": row[1],
+        "interests": row[2],
+        "budget": float(row[3]),
+    }
