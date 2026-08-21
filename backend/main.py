@@ -4,6 +4,45 @@ from database import get_connection
 
 app = FastAPI()
 
+gifts = [
+    {
+        "id": 1,
+        "name": "Coffee subscription",
+        "category": "Coffee",
+        "price": 25,
+    },
+    {
+        "id": 2,
+        "name": "Special edition book",
+        "category": "Books",
+        "price": 30,
+    },
+    {
+        "id": 3,
+        "name": "Travel journal",
+        "category": "Travel",
+        "price": 20,
+    },
+    {
+        "id": 4,
+        "name": "Gaming headset",
+        "category": "Gaming",
+        "price": 45,
+    },
+    {
+        "id": 5,
+        "name": "Vinyl record",
+        "category": "Music",
+        "price": 35,
+    },
+    {
+        "id": 6,
+        "name": "Sports water bottle",
+        "category": "Sports",
+        "price": 18,
+    },
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -43,6 +82,8 @@ def get_people():
         people.append(person)
 
     return people
+
+
 
 @app.post("/people")
 def add_person(person: dict):
@@ -140,4 +181,45 @@ def update_person(person_id: int, person: dict):
         "name": row[1],
         "interests": row[2],
         "budget": float(row[3]),
+    }
+
+@app.get("/people/{person_id}/gifts")
+def get_gift_suggestions(person_id: int):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT id, name, interests, budget
+        FROM people
+        WHERE id = %s
+        """,
+        (person_id,),
+    )
+
+    row = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if row is None:
+        return {"error": "Person not found"}
+
+    person_interests = row[2]
+    person_budget = float(row[3])
+
+    suggestions = []
+
+    for gift in gifts:
+        if gift["category"] in person_interests and gift["price"] <= person_budget:
+            suggestions.append(gift)
+
+    return {
+        "person": {
+            "id": row[0],
+            "name": row[1],
+            "interests": person_interests,
+            "budget": person_budget,
+        },
+        "gifts": suggestions,
     }

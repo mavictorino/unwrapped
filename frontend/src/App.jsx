@@ -21,6 +21,7 @@ function App() {
 
   const [showForm, setShowForm] = useState(false);
   const [editingPerson, setEditingPerson] = useState(null);
+  const [giftSuggestions, setGiftSuggestions] = useState(null);
 
   function handleAddPerson(newPerson) {
     setPeople((currentPeople) => [...currentPeople, newPerson]);
@@ -88,6 +89,23 @@ function App() {
     }
   }
 
+  async function handleFindGift(personId) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/people/${personId}/gifts`,
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to find gifts");
+      }
+      const data = await response.json();
+
+      setGiftSuggestions(data);
+    } catch (error) {
+      console.error("Error finding gifts:", error);
+    }
+  }
+
   return (
     <>
       <Header onAddPerson={() => setShowForm(true)} />
@@ -106,7 +124,6 @@ function App() {
 
           <button>Find a gift ✨</button>
         </section>
-
         {showForm && (
           <section className="form-section">
             <AddPersonForm
@@ -115,7 +132,6 @@ function App() {
             />
           </section>
         )}
-
         {editingPerson && (
           <section>
             <EditPersonForm
@@ -125,7 +141,44 @@ function App() {
             />
           </section>
         )}
+        {giftSuggestions && (
+        <section className="gift-section">
+          <div className="gift-panel">
+            <button
+              className="close-gifts"
+              onClick={() => setGiftSuggestions(null)}
+            >
+              x
+            </button>
 
+            <p className="eyebrow">GIFT MATCH</p>
+
+            <h2>Gift ideas for {giftSuggestions.person.name}</h2>
+
+            <p>
+              Based on their interests and a budget of €{" "}
+              {giftSuggestions.person.budget}
+            </p>
+
+            <div className="gift-list">
+              {giftSuggestions.gifts.map((gift) => (
+                <article className="gift-card" key={gift.id}>
+                  <div>
+                    <h3>{gift.name}</h3>
+                    <span>{gift.category}</span>
+                  </div>
+
+                  <strong>€{gift.price}</strong>
+                </article>
+              ))}
+            </div>
+
+            {giftSuggestions.gifts.length === 0 && (
+              <p>We couldn't find a gift match whithin this budget :(</p>
+            )}
+          </div>
+        </section>
+        )}
         <section className="people-section">
           <h2>Your people</h2>
 
@@ -139,6 +192,7 @@ function App() {
                 budget={person.budget}
                 onEdit={handleEditPerson}
                 onDelete={handleDeletePerson}
+                onFindGift={handleFindGift}
               />
             ))}
           </div>
