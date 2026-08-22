@@ -164,7 +164,10 @@ function App() {
               {giftSuggestions.gifts.map((gift) => (
                 <article className="gift-card" key={gift.id}>
                   <div>
+                    <span className="gift-match">{gift.match}</span>
+
                     <h3>{gift.name}</h3>
+                    
                     <span>{gift.category}</span>
                   </div>
 

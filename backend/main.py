@@ -211,8 +211,33 @@ def get_gift_suggestions(person_id: int):
     suggestions = []
 
     for gift in gifts:
-        if gift["category"] in person_interests and gift["price"] <= person_budget:
-            suggestions.append(gift)
+        if gift["category"] not in person_interests:
+            continue
+
+        if gift["price"] > person_budget:
+            continue
+
+        score = 3
+
+        if gift["price"] <= person_budget * 0.5:
+            score += 2
+
+        if score >= 5:
+            match = "Best Match"
+        elif score >= 3:
+            match = "Good Match"
+        else:
+            match = "Possible Match"
+
+        gift_with_score = {
+            **gift,
+            "score": score,
+            "match": match,
+        }
+
+        suggestions.append(gift_with_score)
+
+    suggestions.sort(key=lambda gift: gift["score"], reverse=True)
 
     return {
         "person": {
