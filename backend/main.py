@@ -4,45 +4,6 @@ from database import get_connection
 
 app = FastAPI()
 
-gifts = [
-    {
-        "id": 1,
-        "name": "Coffee subscription",
-        "category": "Coffee",
-        "price": 25,
-    },
-    {
-        "id": 2,
-        "name": "Special edition book",
-        "category": "Books",
-        "price": 30,
-    },
-    {
-        "id": 3,
-        "name": "Travel journal",
-        "category": "Travel",
-        "price": 20,
-    },
-    {
-        "id": 4,
-        "name": "Gaming headset",
-        "category": "Gaming",
-        "price": 45,
-    },
-    {
-        "id": 5,
-        "name": "Vinyl record",
-        "category": "Music",
-        "price": 35,
-    },
-    {
-        "id": 6,
-        "name": "Sports water bottle",
-        "category": "Sports",
-        "price": 18,
-    },
-]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -199,18 +160,38 @@ def get_gift_suggestions(person_id: int):
 
     row = cursor.fetchone()
 
-    cursor.close()
-    connection.close()
-
     if row is None:
+        cursor.close()
+        connection.close()
+
         return {"error": "Person not found"}
+
 
     person_interests = row[2]
     person_budget = float(row[3])
 
+    cursor.execute(
+        """
+        SELECT id, name, category, price
+        FROM gifts
+        """
+    )
+
+    gift_rows = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
     suggestions = []
 
-    for gift in gifts:
+    for gift_row in gift_rows:
+        gift = {
+            "id": gift_row[0],
+            "name": gift_row[1],
+            "category": gift_row[2],
+            "price": float(gift_row[3]),
+        }
+
         if gift["category"] not in person_interests:
             continue
 
@@ -221,18 +202,20 @@ def get_gift_suggestions(person_id: int):
 
         if gift["price"] <= person_budget * 0.5:
             score += 2
+        elif gift["price"] <= person_budget * 0.75:
+            score += 1
 
-        if score >= 5:
+        if score == 5:
             match = "Best Match"
-        elif score >= 3:
-            match = "Good Match"
+        elif score == 4:
+            match = "Great Match"
         else:
-            match = "Possible Match"
+            match = "Good Match"
 
         gift_with_score = {
             **gift,
-            "score": score,
             "match": match,
+            "score": score,
         }
 
         suggestions.append(gift_with_score)

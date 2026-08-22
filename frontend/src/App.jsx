@@ -99,6 +99,7 @@ function App() {
         throw new Error("Failed to find gifts");
       }
       const data = await response.json();
+      console.log("Gift suggestions:", data);
 
       setGiftSuggestions(data);
     } catch (error) {
@@ -167,7 +168,7 @@ function App() {
                     <span className="gift-match">{gift.match}</span>
 
                     <h3>{gift.name}</h3>
-                    
+
                     <span>{gift.category}</span>
                   </div>
 
