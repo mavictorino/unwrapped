@@ -357,14 +357,85 @@ main {
 }
 
 @media (max-width: 700px) {
+  .header {
+    padding: 18px 0;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .header-button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
   .hero {
     padding: 60px 0 70px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 14vw, 4rem);
+  }
+
+  .hero > p:not(.eyebrow) {
+    font-size: 1rem;
+  }
+
+  .people-section {
+    padding: 50px 0;
   }
 
   .people-grid {
     grid-template-columns: 1fr;
   }
 
+  .person-card {
+    padding: 22px;
+  }
+
+  .form-section {
+    margin-bottom: 50px;
+  }
+
+  .person-form {
+    padding: 24px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .gift-section {
+    margin-bottom: 50px;
+  }
+
+  .gift-panel {
+    padding: 28px 20px;
+  }
+
+  .gift-panel h2 {
+    font-size: 1.6rem;
+    padding-right: 30px;
+  }
+
+  .gift-card {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .gift-card strong {
+    flex-shrink: 0;
+  }
+
+  .card-actions {
+    flex-wrap: wrap;
+  }
+  
   .header-button {
     padding: 8px 12px;
   }
